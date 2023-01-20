@@ -16,4 +16,19 @@
 (define (area-cylinder [radius : Real] [height : Real]) : Real
   (+ (* 2 (* pi (* radius radius))) (* (* pi (* 2 radius)) height)))
 
-(area-cylinder 3 4)
+(check-= (area-cylinder 3 4) 131.94 0.1 "wrong")
+
+;2.2
+
+(define-type Writer (U Pen Pencil))
+(struct Pen ([ink-volume : Real] [how-full : Real]) #:transparent)
+(struct Pencil ([length : Real]) #:transparent)
+
+(define (how-far-to-write [wri : Writer]) : Real
+  (match wri
+  [(Pen ink full) (* 150 (* ink full))]
+  [(Pencil len) (* 56 len)]))
+
+(check-= (how-far-to-write (Pen 2 0.5)) 150 0 "wrong")
+(check-= (how-far-to-write (Pencil 15)) 840 0 "wrong")
+
