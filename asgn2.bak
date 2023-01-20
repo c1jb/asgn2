@@ -2,18 +2,9 @@
 
 (require typed/rackunit)
 
-;2.3.3
-
 (define (total-profit [num : Real]) : Real
   (- (* num 5) (+ 20 (* 0.5 num))))
 
 (check-= (total-profit 5) 2.5 0 "does not work")
 (check-= (total-profit 2) -11 0 "does not work")
 (check-= (total-profit 100) 430 0 "does not work")
-
-;3.3.3
-
-(define (area-cylinder [radius : Real] [height : Real]) : Real
-  (+ (* 2 (* pi (* radius radius))) (* (* pi (* 2 radius)) height)))
-
-(area-cylinder 3 4)
