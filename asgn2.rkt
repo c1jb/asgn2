@@ -59,6 +59,12 @@
 ;2.5
 
 (define-type BTree (U Leaf Node))
-(struct Leaf (val : Real))
-(struct Node (right : BTree) (left : BTree))
+(struct Leaf ([val : Real]) #:transparent)
+(struct Node ([right : BTree] [left : BTree]) #:transparent)
+
+(Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Leaf 6))
+(Node (Leaf 1) (Leaf 2))
+(Leaf 0)
+
+;2.6
 
