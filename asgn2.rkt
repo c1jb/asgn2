@@ -4,8 +4,12 @@
 
 ;2.3.3
 
+(define profit-mult 5)
+(define cost-const 20)
+(define cost-per 0.5)
+
 (define (total-profit [num : Real]) : Real
-  (- (* num 5) (+ 20 (* 0.5 num))))
+  (- (* num profit-mult) (+ cost-const (* cost-per num))))
 
 (check-= (total-profit 5) 2.5 0 "does not work")
 (check-= (total-profit 2) -11 0 "does not work")
@@ -107,9 +111,7 @@
     [(Leaf val) (cond
                 [(equal? val sym) rep]
                 [else orig])]
-    [(Node r l)
-     (match rep
-       [(Node ri le) (Node (subst r sym ri) (subst l sym le))])]))
+    [(Node r l) (Node (subst r sym rep) (subst l sym rep))]))
 
-(check-equal? (subst (Node (Node (Leaf 'ab) (Leaf 'zz)) (Leaf 'ab)) 'ab (Node (Node (Leaf 'yy) (Leaf 'yy)) (Leaf 'yy))) (Node (Node (Leaf 'yy) (Leaf 'zz)) (Leaf 'yy)))
+(check-equal? (subst (Node (Node (Leaf 'ab) (Leaf 'zz)) (Leaf 'ab)) 'ab (Node (Leaf 'yy) (Leaf 'yy))) (Node (Node (Node (Leaf 'yy) (Leaf 'yy)) (Leaf 'zz)) (Node (Leaf 'yy) (Leaf 'yy))))
 (check-equal? (subst (Leaf 'ab) 'ab (Leaf 'zz)) (Leaf 'zz))
