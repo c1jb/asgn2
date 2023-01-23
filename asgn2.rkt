@@ -87,7 +87,9 @@
     [(Leaf v) (Leaf 'zz)]
     [(Node r l) (Node (zz-tree r) (zz-tree l))]))
 
-(check-equal? (zz-tree (Node (Node (Node (Leaf 'a) (Node (Leaf 'b) (Leaf 'c))) (Node (Leaf 'c) (Leaf 'e))) (Leaf 'f))) (Node (Node (Node (Leaf 'zz) (Node (Leaf 'zz) (Leaf 'zz))) (Node (Leaf 'zz) (Leaf 'zz))) (Leaf 'zz)))
+(check-equal? (zz-tree (Node (Node (Node (Leaf 'a) (Node (Leaf 'b) (Leaf 'c))) (Node (Leaf 'c) (Leaf 'e)))
+                             (Leaf 'f))) (Node (Node (Node (Leaf 'zz) (Node (Leaf 'zz) (Leaf 'zz)))
+                                                     (Node (Leaf 'zz) (Leaf 'zz))) (Leaf 'zz)))
 
 ;2.7
 
@@ -100,7 +102,8 @@
                   [else (+ 1 (min-depth r))])]))
 
 (check-equal? (min-depth (Leaf 'a)) 0)
-(check-equal? (min-depth (Node (Node (Node (Leaf 'a) (Node (Leaf 'b) (Leaf 'c))) (Node (Leaf 'd) (Leaf 'e))) (Node (Leaf 'f) (Leaf 'g)))) 2)
+(check-equal? (min-depth (Node (Node (Node (Leaf 'a) (Node (Leaf 'b) (Leaf 'c)))
+                                     (Node (Leaf 'd) (Leaf 'e))) (Node (Leaf 'f) (Leaf 'g)))) 2)
 
 ;2.8
 
@@ -110,8 +113,10 @@
     [(Leaf val) (equal? val v)]
     [(Node r l) (or (contains? r v) (contains? l v))]))
 
-(check-equal? (contains? (Node (Node (Node (Leaf 'b) (Node (Leaf 'c) (Leaf 'a))) (Node (Leaf 'e) (Leaf 'f))) (Node (Leaf 'g) (Leaf 'h))) 'a) #t)
-(check-equal? (contains? (Node (Node (Node (Leaf 'a) (Node (Leaf 'b) (Leaf 'c))) (Node (Leaf 'd) (Leaf 'e))) (Node (Leaf 'f) (Leaf 'g))) 'h) #f)
+(check-equal? (contains? (Node (Node (Node (Leaf 'b) (Node (Leaf 'c) (Leaf 'a))) (Node (Leaf 'e) (Leaf 'f)))
+                               (Node (Leaf 'g) (Leaf 'h))) 'a) #t)
+(check-equal? (contains? (Node (Node (Node (Leaf 'a) (Node (Leaf 'b) (Leaf 'c))) (Node (Leaf 'd) (Leaf 'e)))
+                               (Node (Leaf 'f) (Leaf 'g))) 'h) #f)
 
 ;2.9
 
@@ -124,5 +129,6 @@
                 [else orig])]
     [(Node r l) (Node (subst r sym rep) (subst l sym rep))]))
 
-(check-equal? (subst (Node (Node (Leaf 'ab) (Leaf 'zz)) (Leaf 'ab)) 'ab (Node (Leaf 'yy) (Leaf 'yy))) (Node (Node (Node (Leaf 'yy) (Leaf 'yy)) (Leaf 'zz)) (Node (Leaf 'yy) (Leaf 'yy))))
+(check-equal? (subst (Node (Node (Leaf 'ab) (Leaf 'zz)) (Leaf 'ab)) 'ab (Node (Leaf 'yy) (Leaf 'yy)))
+              (Node (Node (Node (Leaf 'yy) (Leaf 'yy)) (Leaf 'zz)) (Node (Leaf 'yy) (Leaf 'yy))))
 (check-equal? (subst (Leaf 'ab) 'ab (Leaf 'zz)) (Leaf 'zz))
