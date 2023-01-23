@@ -75,3 +75,17 @@
 
 (check-equal? (zz-tree (Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Leaf 6))) (Node (Node (Node (Leaf 'zz) (Node (Leaf 'zz) (Leaf 'zz))) (Node (Leaf 'zz) (Leaf 'zz))) (Leaf 'zz)))
 
+;2.7
+
+(define (min-depth [tree : BTree]) : Real
+  (match tree
+    [(Leaf v) 0]
+    [(Node r l) (cond
+                  [(> (min-depth r) (- (min-depth l) 1))  (+ 1 (min-depth l))]
+                  [else (+ 1 (min-depth r))])]))
+
+(check-equal? (min-depth (Leaf 0)) 0)
+(check-equal? (min-depth (Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Node (Leaf 7) (Leaf 8)))) 2)
+
+;2.8
+
