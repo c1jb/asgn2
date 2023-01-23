@@ -62,12 +62,12 @@
 ;2.5
 
 (define-type BTree (U Leaf Node))
-(struct Leaf ([val : Any]) #:transparent)
+(struct Leaf ([val : Symbol]) #:transparent)
 (struct Node ([right : BTree] [left : BTree]) #:transparent)
 
-(Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Leaf 6))
-(Node (Leaf 1) (Leaf 2))
-(Leaf 0)
+(Node (Node (Node (Leaf 'a) (Node (Leaf 'b) (Leaf 'c))) (Node (Leaf 'd) (Leaf 'e))) (Leaf 'f))
+(Node (Leaf 'a) (Leaf 'b))
+(Leaf 'a)
 
 ;2.6
 
@@ -76,7 +76,7 @@
     [(Leaf v) (Leaf 'zz)]
     [(Node r l) (Node (zz-tree r) (zz-tree l))]))
 
-(check-equal? (zz-tree (Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Leaf 6))) (Node (Node (Node (Leaf 'zz) (Node (Leaf 'zz) (Leaf 'zz))) (Node (Leaf 'zz) (Leaf 'zz))) (Leaf 'zz)))
+(check-equal? (zz-tree (Node (Node (Node (Leaf 'a) (Node (Leaf 'b) (Leaf 'c))) (Node (Leaf 'c) (Leaf 'e))) (Leaf 'f))) (Node (Node (Node (Leaf 'zz) (Node (Leaf 'zz) (Leaf 'zz))) (Node (Leaf 'zz) (Leaf 'zz))) (Leaf 'zz)))
 
 ;2.7
 
@@ -87,8 +87,8 @@
                   [(> (min-depth r) (- (min-depth l) 1))  (+ 1 (min-depth l))]
                   [else (+ 1 (min-depth r))])]))
 
-(check-equal? (min-depth (Leaf 0)) 0)
-(check-equal? (min-depth (Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Node (Leaf 7) (Leaf 8)))) 2)
+(check-equal? (min-depth (Leaf 'a)) 0)
+(check-equal? (min-depth (Node (Node (Node (Leaf 'a) (Node (Leaf 'b) (Leaf 'c))) (Node (Leaf 'd) (Leaf 'e))) (Node (Leaf 'f) (Leaf 'g)))) 2)
 
 ;2.8
 
@@ -99,8 +99,8 @@
                 [else #f])]
     [(Node r l) (or (contains? r v) (contains? l v))]))
 
-(check-equal? (contains? (Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Node (Leaf 7) (Leaf 8))) 1) #t)
-(check-equal? (contains? (Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Node (Leaf 7) (Leaf 8))) 10) #f)
+(check-equal? (contains? (Node (Node (Node (Leaf 'b) (Node (Leaf 'c) (Leaf 'a))) (Node (Leaf 'e) (Leaf 'f))) (Node (Leaf 'g) (Leaf 'h))) 'a) #t)
+(check-equal? (contains? (Node (Node (Node (Leaf 'a) (Node (Leaf 'b) (Leaf 'c))) (Node (Leaf 'd) (Leaf 'e))) (Node (Leaf 'f) (Leaf 'g))) 'h) #f)
 
 ;2.9
 
