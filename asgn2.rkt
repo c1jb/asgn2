@@ -97,9 +97,21 @@
     [(Leaf val) (cond
                 [(equal? val v) #t]
                 [else #f])]
-    [(Node l r) (or (contains? l v) (contains? r v))]))
+    [(Node r l) (or (contains? r v) (contains? l v))]))
 
 (check-equal? (contains? (Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Node (Leaf 7) (Leaf 8))) 1) #t)
 (check-equal? (contains? (Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Node (Leaf 7) (Leaf 8))) 10) #f)
 
-;2.9 
+;2.9
+
+(define (subst [orig : BTree] [sym : Symbol] [rep : BTree]) : BTree
+  (match orig
+    [(Leaf val) (cond
+                [(equal? val sym) rep]
+                [else orig])]
+    [(Node r l)
+     (match rep
+       [(Node ri le) (Node (subst r sym ri) (subst l sym le))])]))
+
+(check-equal? (subst (Node (Node (Leaf 'ab) (Leaf 'zz)) (Leaf 'ab)) 'ab (Node (Node (Leaf 'yy) (Leaf 'yy)) (Leaf 'yy))) (Node (Node (Leaf 'yy) (Leaf 'zz)) (Leaf 'yy)))
+(check-equal? (subst (Leaf 'ab) 'ab (Leaf 'zz)) (Leaf 'zz))
