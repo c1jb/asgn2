@@ -94,9 +94,7 @@
 
 (define (contains? [tree : BTree] [v : Any]) : Boolean
   (match tree
-    [(Leaf val) (cond
-                [(equal? val v) #t]
-                [else #f])]
+    [(Leaf val) (equal? val v)]
     [(Node r l) (or (contains? r v) (contains? l v))]))
 
 (check-equal? (contains? (Node (Node (Node (Leaf 'b) (Node (Leaf 'c) (Leaf 'a))) (Node (Leaf 'e) (Leaf 'f))) (Node (Leaf 'g) (Leaf 'h))) 'a) #t)
