@@ -32,6 +32,8 @@
 (check-= (how-far-to-write (Pen 2 0.5)) 150 0 "wrong")
 (check-= (how-far-to-write (Pencil 15)) 840 0 "wrong")
 
+;2.3
+
 (define-type Polynomial (U Linear Quadratic))
 (struct Linear ([A : Real] [B : Real]) #:transparent)
 (struct Quadratic ([A : Real] [B : Real] [C : Real]) #:transparent)
@@ -43,3 +45,20 @@
 
 (check-= (interp (Linear 5 3) 2) 13 0 "wrong")
 (check-= (interp (Quadratic 5 3 1) 2) 27 0 "wrong")
+
+;2.4
+
+(define (derivative [p : Polynomial]) : Polynomial
+  (match p
+    [(Linear A B) (Linear 0 A)]
+    [(Quadratic A B C) (Linear (* A 2) B)]))
+
+(check-equal? (derivative (Linear 2 3)) (Linear 0 2))
+(check-equal? (derivative (Quadratic 2 3 4)) (Linear 4 3))
+
+;2.5
+
+(define-type BTree (U Leaf Node))
+(struct Leaf (val : Real))
+(struct Node (right : BTree) (left : BTree))
+
