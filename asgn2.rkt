@@ -8,6 +8,7 @@
 (define cost-const 20)
 (define cost-per 0.5)
 
+;takes in the total number of customers and returns the profit of the theater
 (define (total-profit [num : Real]) : Real
   (- (* num profit-mult) (+ cost-const (* cost-per num))))
 
@@ -17,6 +18,7 @@
 
 ;3.3.3
 
+;takes in a radius and height and returns the surface area of a cylinder with the corresponding dimensions
 (define (area-cylinder [radius : Real] [height : Real]) : Real
   (+ (* 2 (* pi (* radius radius))) (* (* pi (* 2 radius)) height)))
 
@@ -31,6 +33,7 @@
 (define pen-dist 150)
 (define pencil-dist 56)
 
+;takes in a writing utensil and returns the remaining distance that utensil can write
 (define (how-far-to-write [wri : Writer]) : Real
   (match wri
   [(Pen ink full) (* pen-dist (* ink full))]
@@ -45,6 +48,7 @@
 (struct Linear ([A : Real] [B : Real]) #:transparent)
 (struct Quadratic ([A : Real] [B : Real] [C : Real]) #:transparent)
 
+;takes in a polynomial and variable value, and returns the result of that polynomial evaluated to that value
 (define (interp [p : Polynomial] [x : Real]) : Real
   (match p
   [(Linear A B) (+ (* A x) B)]
@@ -55,6 +59,7 @@
 
 ;2.4
 
+;takes in a polynomial and returns the derivative of that polynomial
 (define (derivative [p : Polynomial]) : Polynomial
   (match p
     [(Linear A B) (Linear 0 A)]
@@ -69,12 +74,14 @@
 (struct Leaf ([val : Symbol]) #:transparent)
 (struct Node ([right : BTree] [left : BTree]) #:transparent)
 
+;3 examples of the nodes being tested
 (Node (Node (Node (Leaf 'a) (Node (Leaf 'b) (Leaf 'c))) (Node (Leaf 'd) (Leaf 'e))) (Leaf 'f))
 (Node (Leaf 'a) (Leaf 'b))
 (Leaf 'a)
 
 ;2.6
 
+;takes in a BTree and returns the same BTree, but with all vals in Leaves as 'zz
 (define (zz-tree [tree : BTree]) : BTree
   (match tree
     [(Leaf v) (Leaf 'zz)]
@@ -84,6 +91,7 @@
 
 ;2.7
 
+;takes in a BTree and returns the depth of the shortest path to a Leaf in that tree
 (define (min-depth [tree : BTree]) : Real
   (match tree
     [(Leaf v) 0]
@@ -96,6 +104,7 @@
 
 ;2.8
 
+;takes in a BTree and a value and returns true or false depending on whether that value is within the tree at some point
 (define (contains? [tree : BTree] [v : Any]) : Boolean
   (match tree
     [(Leaf val) (equal? val v)]
@@ -106,6 +115,8 @@
 
 ;2.9
 
+;takes in a BTree (orig), Symbol (sym) and another BTree (rep) and returns a new tree that is a copy
+;of orig, but with each Leaf containing sym replaced by the rep tree. 
 (define (subst [orig : BTree] [sym : Symbol] [rep : BTree]) : BTree
   (match orig
     [(Leaf val) (cond
