@@ -59,7 +59,7 @@
 ;2.5
 
 (define-type BTree (U Leaf Node))
-(struct Leaf ([val : Real]) #:transparent)
+(struct Leaf ([val : Any]) #:transparent)
 (struct Node ([right : BTree] [left : BTree]) #:transparent)
 
 (Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Leaf 6))
@@ -67,4 +67,11 @@
 (Leaf 0)
 
 ;2.6
+
+(define (zz-tree [tree : BTree]) : BTree
+  (match tree
+    [(Leaf v) (Leaf 'zz)]
+    [(Node r l) (Node (zz-tree r) (zz-tree l))]))
+
+(check-equal? (zz-tree (Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Leaf 6))) (Node (Node (Node (Leaf 'zz) (Node (Leaf 'zz) (Leaf 'zz))) (Node (Leaf 'zz) (Leaf 'zz))) (Leaf 'zz)))
 
