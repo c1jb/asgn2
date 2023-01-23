@@ -32,3 +32,14 @@
 (check-= (how-far-to-write (Pen 2 0.5)) 150 0 "wrong")
 (check-= (how-far-to-write (Pencil 15)) 840 0 "wrong")
 
+(define-type Polynomial (U Linear Quadratic))
+(struct Linear ([A : Real] [B : Real]) #:transparent)
+(struct Quadratic ([A : Real] [B : Real] [C : Real]) #:transparent)
+
+(define (interp [p : Polynomial] [x : Real]) : Real
+  (match p
+  [(Linear A B) (+ (* A x) B)]
+  [(Quadratic A B C) (+ (+ (* A (* x x)) (* B x)) C)]))
+
+(check-= (interp (Linear 5 3) 2) 13 0 "wrong")
+(check-= (interp (Quadratic 5 3 1) 2) 27 0 "wrong")
