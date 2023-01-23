@@ -24,10 +24,13 @@
 (struct Pen ([ink-volume : Real] [how-full : Real]) #:transparent)
 (struct Pencil ([length : Real]) #:transparent)
 
+(define pen-dist 150)
+(define pencil-dist 56)
+
 (define (how-far-to-write [wri : Writer]) : Real
   (match wri
-  [(Pen ink full) (* 150 (* ink full))]
-  [(Pencil len) (* 56 len)]))
+  [(Pen ink full) (* pen-dist (* ink full))]
+  [(Pencil len) (* pencil-dist len)]))
 
 (check-= (how-far-to-write (Pen 2 0.5)) 150 0 "wrong")
 (check-= (how-far-to-write (Pencil 15)) 840 0 "wrong")
@@ -89,3 +92,14 @@
 
 ;2.8
 
+(define (contains? [tree : BTree] [v : Any]) : Boolean
+  (match tree
+    [(Leaf val) (cond
+                [(equal? val v) #t]
+                [else #f])]
+    [(Node l r) (or (contains? l v) (contains? r v))]))
+
+(check-equal? (contains? (Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Node (Leaf 7) (Leaf 8))) 1) #t)
+(check-equal? (contains? (Node (Node (Node (Leaf 5) (Node (Leaf 2) (Leaf 1))) (Node (Leaf 3) (Leaf 4))) (Node (Leaf 7) (Leaf 8))) 10) #f)
+
+;2.9 
