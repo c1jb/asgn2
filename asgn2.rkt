@@ -132,3 +132,21 @@
 (check-equal? (subst (Node (Node (Leaf 'ab) (Leaf 'zz)) (Leaf 'ab)) 'ab (Node (Leaf 'yy) (Leaf 'yy)))
               (Node (Node (Node (Leaf 'yy) (Leaf 'yy)) (Leaf 'zz)) (Node (Leaf 'yy) (Leaf 'yy))))
 (check-equal? (subst (Leaf 'ab) 'ab (Leaf 'zz)) (Leaf 'zz))
+
+;2.10
+
+;takes in a BTree and a value and returns the distance to that node from the value
+(define (path-length-helper [tree : BTree] [curr : Real]) : (Listof Real)
+  (match tree
+    [(Leaf val) (list curr)]
+    [(Node r l) (append (path-length-helper r (+ 1 curr)) (path-length-helper l (+ 1 curr)))]))
+
+(define init-path-length 0)
+
+;takes in a BTree and returns a list of every path length
+(define (all-path-lengths [tree : BTree]) : (Listof Real)
+  (path-length-helper tree init-path-length))
+
+(check-equal? (all-path-lengths (Node (Node (Leaf 'ab) (Leaf 'zz)) (Leaf 'ab))) '(2 2 1))
+(check-equal? (all-path-lengths (Leaf 'a)) '(0))
+(check-equal? (all-path-lengths (Node (Leaf 'b) (Leaf 'a))) '(1 1))
